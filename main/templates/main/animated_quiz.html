@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BodyCode — Опрос</title>
+  <link rel="stylesheet" href="{% static 'main/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'main/animated_quiz.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="animated-quiz-page">
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="{% url 'main:quiz' %}" class="logo">
+        <span class="logo__text">Body<span class="accent">Code</span></span>
+      </a>
+      <div style="flex: 1;"></div>
+      <a href="{% url 'main:quiz' %}" class="btn btn--outline">Вернуться на главную</a>
+    </div>
+  </header>
+
+  <section class="animated-quiz-section">
+    <div class="container">
+      <div class="animated-quiz-header">
+        <h1 class="section-title">Расскажи о себе</h1>
+        <p class="section-sub">Ответь на вопросы — получишь персональную программу тренировок</p>
+      </div>
+
+      <form method="post" id="animated-quiz-form" class="animated-quiz-container" novalidate>
+        {% csrf_token %}
+
+        <div class="quiz-progress">
+          <div class="progress-bar" id="progress-bar"></div>
+          <span class="progress-text"><span id="current-question">1</span> / <span id="total-questions">8</span></span>
+        </div>
+
+        <!-- Question 1: Gender -->
+        <div class="quiz-question" data-question="1">
+          <h2 class="quiz-question__title">Пол</h2>
+          <div class="gender-select">
+            {% for radio in form.gender %}
+              <label class="gender-option">
+                {{ radio.tag }}
+                <div class="gender-option__card">
+                  <span class="gender-option__icon">{% if forloop.first %}♂{% else %}♀{% endif %}</span>
+                  <span>{{ radio.choice_label }}</span>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+          {{ form.gender.errors }}
+        </div>
+
+        <!-- Question 2: Age -->
+        <div class="quiz-question" data-question="2">
+          <h2 class="quiz-question__title">Возраст</h2>
+          <div class="param-input">
+            <label class="param-input__label" for="{{ form.age.id_for_label }}">{{ form.age.label }}</label>
+            <div class="param-input__field">
+              <span class="param-input__unit">лет</span>
+              {{ form.age }}
+            </div>
+          </div>
+          {{ form.age.errors }}
+        </div>
+
+        <!-- Question 3: Weight and Height -->
+        <div class="quiz-question" data-question="3">
+          <h2 class="quiz-question__title">Вес и рост</h2>
+          <div class="params-row">
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.weight.id_for_label }}">{{ form.weight.label }}</label>
+              <div class="param-input__field">
+                <span class="param-input__unit">кг</span>
+                {{ form.weight }}
+              </div>
+              {{ form.weight.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.height.id_for_label }}">{{ form.height.label }}</label>
+              <div class="param-input__field">
+                <span class="param-input__unit">см</span>
+                {{ form.height }}
+              </div>
+              {{ form.height.errors }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 4: Body Measurements -->
+        <div class="quiz-question" data-question="4">
+          <h2 class="quiz-question__title">Обхваты</h2>
+          <div class="measure-grid">
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.chest.id_for_label }}">{{ form.chest.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.chest }}</div>
+              {{ form.chest.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.waist.id_for_label }}">{{ form.waist.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.waist }}</div>
+              {{ form.waist.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.hips.id_for_label }}">{{ form.hips.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.hips }}</div>
+              {{ form.hips.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.thigh.id_for_label }}">{{ form.thigh.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.thigh }}</div>
+              {{ form.thigh.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.calves.id_for_label }}">{{ form.calves.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.calves }}</div>
+              {{ form.calves.errors }}
+            </div>
+            <div class="param-input">
+              <label class="param-input__label" for="{{ form.biceps.id_for_label }}">{{ form.biceps.label }}</label>
+              <div class="param-input__field"><span class="param-input__unit">см</span>{{ form.biceps }}</div>
+              {{ form.biceps.errors }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 5: Training Now -->
+        <div class="quiz-question" data-question="5">
+          <h2 class="quiz-question__title">Сейчас тренируешься?</h2>
+          <div class="gender-select training-yesno">
+            {% for radio in form.training_now %}
+              <label class="gender-option">
+                {{ radio.tag }}
+                <div class="gender-option__card">
+                  <span class="gender-option__icon">{% if forloop.first %}✓{% else %}—{% endif %}</span>
+                  <span>{{ radio.choice_label }}</span>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+          {{ form.training_now.errors }}
+        </div>
+
+        <!-- Question 6: Training Period -->
+        <div class="quiz-question" data-question="6">
+          <h2 class="quiz-question__title">Период</h2>
+          <div class="age-select">
+            <div id="training-period-training" style="display:none">
+              <label class="age-option"><input type="radio" name="training_period" value="lt1m"><span>Меньше 1 месяца</span></label>
+              <label class="age-option"><input type="radio" name="training_period" value="m1_3"><span>1–3 месяца</span></label>
+              <label class="age-option"><input type="radio" name="training_period" value="m3_6"><span>3–6 месяцев</span></label>
+              <label class="age-option"><input type="radio" name="training_period" value="gt6m"><span>Больше 6 месяцев</span></label>
+            </div>
+            <div id="training-period-pause" style="display:none">
+              <label class="age-option"><input type="radio" name="training_period" value="lt2w"><span>Меньше 2 недель</span></label>
+              <label class="age-option"><input type="radio" name="training_period" value="w2_4"><span>2–4 недели</span></label>
+              <label class="age-option"><input type="radio" name="training_period" value="gt4w"><span>Больше 4 недель</span></label>
+            </div>
+          </div>
+          {{ form.training_period.errors }}
+        </div>
+
+        <!-- Question 7: Goal -->
+        <div class="quiz-question" data-question="7">
+          <h2 class="quiz-question__title">Цель</h2>
+          <div class="goals-grid">
+            {% for radio in form.goal %}
+              <label class="goal-option {% if forloop.last %}goal-option--maintenance{% endif %}">
+                {{ radio.tag }}
+                <div class="goal-option__card">
+                  <span class="goal-option__icon">
+                    {% if forloop.counter == 1 %}▼{% elif forloop.counter == 2 %}▲{% else %}◈{% endif %}
+                  </span>
+                  <span class="goal-option__title">{{ radio.choice_label }}</span>
+                  <span class="goal-option__sub">
+                    {% if forloop.counter == 1 %}Дефицит и кардио-акценты{% elif forloop.counter == 2 %}Силовой объём и прогрессия{% else %}Стабильность и самочувствие{% endif %}
+                  </span>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+          {{ form.goal.errors }}
+        </div>
+
+        <!-- Question 8: Contraindications -->
+        <div class="quiz-question" data-question="8">
+          <h2 class="quiz-question__title">Противопоказания</h2>
+          <p class="section-sub" style="margin-bottom: 1rem;">Можно не отмечать, если ограничений нет</p>
+          <div class="contra-grid">
+            {% for box in form.injury %}
+              <label class="contra-option">
+                {{ box.tag }}
+                <span>{{ box.choice_label }}</span>
+              </label>
+            {% endfor %}
+          </div>
+          {{ form.injury.errors }}
+        </div>
+
+        <div class="quiz-controls">
+          <button type="button" class="btn btn--outline btn--lg" id="prev-btn" style="display: none;">← Назад</button>
+          <button type="button" class="btn btn--primary btn--lg" id="next-btn">Далее →</button>
+          <button type="submit" class="btn btn--primary btn--lg" id="submit-btn" style="display: none;">Создать программу →</button>
+        </div>
+      </form>
+
+      {% if program %}
+      <div class="quiz-result-overlay is-visible" id="quiz-result-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-result-title">
+        <div class="quiz-result-modal">
+          <button type="button" class="quiz-result-close" id="quiz-result-close" aria-label="Закрыть результат">×</button>
+          <div class="quiz-result">
+            <div class="section-label">Результат</div>
+            <h2 class="section-title" id="quiz-result-title">Твоя программа</h2>
+            <p class="section-sub">План на неделю, объём и акценты по ответам квиза</p>
+
+            <div class="dashboard__layout">
+              <div class="dash-col dash-col--main">
+                {% for day in program.exercises_by_day %}
+                  <div class="dash-card dash-card--workout dash-result-day">
+                    <div class="dash-card__header">
+                      <span class="dash-card__label">{{ day.day }}</span>
+                      <span class="dash-card__badge">{{ day.focus }}</span>
+                    </div>
+                    <h3 class="dash-card__title">Упражнения</h3>
+                    <div class="workout-list">
+                      {% for exercise in day.exercises %}
+                        <div class="workout-item">
+                          <span class="workout-item__name">{{ exercise.name }}</span>
+                          <span class="workout-item__sets">{{ exercise.sets }}× {{ exercise.reps }}</span>
+                        </div>
+                      {% empty %}
+                        <div class="workout-item">
+                          <span class="workout-item__name">Нет подходящих упражнений в шаблоне — см. рекомендации</span>
+                          <span class="workout-item__sets">—</span>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="dash-col dash-col--side">
+                <div class="dash-card dash-card--calories dash-card--result-meta">
+                  <div class="dash-card__header">
+                    <span class="dash-card__label">Сводка</span>
+                    <span class="dash-card__badge dash-card__badge--orange">ИМТ {{ program.bmi }}</span>
+                  </div>
+                  <h3 class="dash-card__title">{{ program.program_type }}</h3>
+                  <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">
+                    Уровень: <strong style="color: var(--text);">{{ program.level }}</strong>
+                  </p>
+                  <div class="workout-list">
+                    <div class="workout-item">
+                      <span class="workout-item__name">Подходы × повторения</span>
+                      <span class="workout-item__sets">{{ program.sets }} / {{ program.reps }}</span>
+                    </div>
+                    <div class="workout-item">
+                      <span class="workout-item__name">Длительность</span>
+                      <span class="workout-item__sets">{{ program.duration_weeks }} нед.</span>
+                    </div>
+                    <div class="workout-item">
+                      <span class="workout-item__name">Кардио</span>
+                      <span class="workout-item__sets" style="max-width: 62%; text-align: right; white-space: normal;">{{ program.cardio }}</span>
+                    </div>
+                    {% if program.axial_load %}
+                    <div class="workout-item">
+                      <span class="workout-item__name">Осевая нагрузка</span>
+                      <span class="workout-item__sets" style="max-width: 62%; text-align: right; white-space: normal;">{{ program.axial_load }}</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% if program.focus.weakest %}
+                    <div class="focus-tags">
+                      {% for z in program.focus.weakest|slice:":8" %}
+                        <span class="focus-tag focus-tag--weak">{{ z }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="dash-card dash-card--progress">
+                  <div class="dash-card__header">
+                    <span class="dash-card__label">Рекомендации</span>
+                  </div>
+                  <ul class="recommendations-list">
+                    {% for rec in program.recommendations %}
+                      <li>{{ rec }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 28px;">
+              <a href="{% url 'main:animated_quiz' %}" class="btn btn--ghost btn--lg">Заполнить квиз заново</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="{% url 'main:quiz' %}#hero" class="logo">
+          <span class="logo__text">Body<span class="accent">Code</span></span>
+        </a>
+        <p class="footer__desc">Персональные программы тренировок по данным квиза.</p>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Навигация</div>
+        <a href="{% url 'main:quiz' %}#how" class="footer__link">Как это работает</a>
+        <a href="{% url 'main:quiz' %}#benefits" class="footer__link">Преимущества</a>
+        <a href="{% url 'main:quiz' %}#faq" class="footer__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="footer__link">Жим лежа</a>
+        <a href="{% url 'main:animated_quiz' %}" class="footer__link">Создать программу</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Проект</div>
+        <span class="footer__link" style="cursor: default;">Django + SQLite</span>
+        <span class="footer__link" style="cursor: default;">HTML / CSS / JS</span>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© 2026 BodyCode. Все права защищены.</span>
+        <span class="footer__bottom-links">
+          <a href="https://github.com/Murad5252" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub Murad5252">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/termiiinator" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub termiiinator">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/animated_quiz.js' %}"></script>
+</body>
+</html>

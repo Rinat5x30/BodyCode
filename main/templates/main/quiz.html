@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BodyCode — Научный подход к твоему телу</title>
+  <link rel="stylesheet" href="{% static 'main/styles.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="{% url 'main:quiz' %}#hero" class="logo">
+        <span class="logo__text">Body<span class="accent">Code</span></span>
+      </a>
+
+      <nav class="nav">
+        <a href="#how" class="nav__link">Как это работает</a>
+        <a href="#benefits" class="nav__link">Преимущества</a>
+        <a href="#faq" class="nav__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="nav__link">Жим лёжа</a>
+      </nav>
+
+      <a href="/animated/" class="btn btn--outline">Начать</a>
+
+      <input type="checkbox" id="menu-toggle" class="menu-toggle-input" />
+      <label for="menu-toggle" class="menu-burger">
+        <span></span><span></span><span></span>
+      </label>
+      <div class="mobile-nav">
+        <a href="#how" class="nav__link">Как это работает</a>
+        <a href="#benefits" class="nav__link">Преимущества</a>
+        <a href="#faq" class="nav__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="nav__link">Жим лёжа</a>
+        <a href="/animated/" class="btn btn--primary">Начать</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero__bg-glow hero__bg-glow--1"></div>
+    <div class="hero__bg-glow hero__bg-glow--2"></div>
+    <div class="hero__grid-lines"></div>
+
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <h1 class="hero__title">
+          Научный<br />
+          <span class="title-outline">подход</span><br />
+          к твоему телу
+        </h1>
+        <p class="hero__sub">
+          Персональная программа тренировок по результатам квиза:<br />
+          уровень, сплит, объём и акценты под твои данные
+        </p>
+        <div class="hero__actions">
+          <a href="{% url 'main:animated_quiz' %}" class="btn btn--primary btn--lg">Создать программу</a>
+          <a href="#how" class="btn btn--ghost btn--lg">Как это работает</a>
+        </div>
+        <div class="hero__stats">
+          <div class="stat">
+            <span class="stat__num">Квиз</span>
+            <span class="stat__label">анкета</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat__num">План</span>
+            <span class="stat__label">на неделю</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat__num">Без</span>
+            <span class="stat__label">кабинета</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="body-figure">
+          <div class="body-figure__glow body-figure__glow--1"></div>
+          <div class="body-figure__glow body-figure__glow--2"></div>
+          <div class="body-figure__bg-blur"></div>
+          <img src="{% static 'main/hero-figure.png' %}" alt="Мышечная анатомия" class="body-figure__image" />
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-label">Процесс</div>
+      <h2 class="section-title">Как это работает</h2>
+      <p class="section-sub">Три шага до твоей программы тренировок</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step__num">01</div>
+          <div class="step__icon">◎</div>
+          <h3 class="step__title">Расскажи о себе</h3>
+          <p class="step__text">Заполни квиз: пол, возраст, обхваты, цель и ограничения по здоровью.</p>
+          <div class="step__connector"></div>
+        </div>
+        <div class="step">
+          <div class="step__num">02</div>
+          <div class="step__icon">⟡</div>
+          <h3 class="step__title">Алгоритм анализирует</h3>
+          <p class="step__text">Считаем ИМТ, уровень и сплит. Учитываем перерывы и противопоказания.</p>
+          <div class="step__connector"></div>
+        </div>
+        <div class="step">
+          <div class="step__num">03</div>
+          <div class="step__icon">⬡</div>
+          <h3 class="step__title">Получи программу</h3>
+          <p class="step__text">План на неделю: дни, упражнения, подходы и повторения плюс рекомендации.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits" id="benefits">
+    <div class="container">
+      <div class="section-label">Преимущества</div>
+      <h2 class="section-title">Почему BodyCode</h2>
+
+      <div class="benefits__grid">
+        <div class="benefit-card benefit-card--large">
+          <div class="benefit-card__icon">◈</div>
+          <h3 class="benefit-card__title">Персонализация</h3>
+          <p class="benefit-card__text">Программа строится от твоих ответов: цель, опыт, морфология и ограничения — не один шаблон на всех.</p>
+          <div class="benefit-card__tag">Rule-based</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">◉</div>
+          <h3 class="benefit-card__title">Сплиты и уровни</h3>
+          <p class="benefit-card__text">Фулбади, тяни-толкай, верх-низ и другие схемы в зависимости от пола и уровня.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">⊕</div>
+          <h3 class="benefit-card__title">Учёт здоровья</h3>
+          <p class="benefit-card__text">Противопоказания фильтруют рискованные упражнения и корректируют нагрузку.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">⟳</div>
+          <h3 class="benefit-card__title">Масштабирование</h3>
+          <p class="benefit-card__text">Логику можно расширить базой упражнений в БД и позже AI-подбором.</p>
+        </div>
+
+        <div class="benefit-card benefit-card--accent">
+          <div class="benefit-card__big-num">BMI</div>
+          <p class="benefit-card__text">Объём и кардио корректируются по индексу массы тела и возрасту</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if program %}
+  <section class="dashboard dashboard--result" id="dashboard">
+    <div class="container">
+      <div class="section-label">Результат</div>
+      <h2 class="section-title">Твоя программа</h2>
+      <p class="section-sub">План на неделю, объём и акценты по ответам квиза</p>
+
+      <div class="dashboard__layout">
+        <div class="dash-col dash-col--main">
+          {% for day in program.exercises_by_day %}
+            <div class="dash-card dash-card--workout dash-result-day">
+              <div class="dash-card__header">
+                <span class="dash-card__label">{{ day.day }}</span>
+                <span class="dash-card__badge">{{ day.focus }}</span>
+              </div>
+              <h3 class="dash-card__title">Упражнения</h3>
+              <div class="workout-list">
+                {% for exercise in day.exercises %}
+                  <div class="workout-item">
+                    <span class="workout-item__name">{{ exercise.name }}</span>
+                    <span class="workout-item__sets">{{ exercise.sets }}× {{ exercise.reps }}</span>
+                  </div>
+                {% empty %}
+                  <div class="workout-item">
+                    <span class="workout-item__name">Нет подходящих упражнений в шаблоне — см. рекомендации</span>
+                    <span class="workout-item__sets">—</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="dash-col dash-col--side">
+          <div class="dash-card dash-card--calories dash-card--result-meta">
+            <div class="dash-card__header">
+              <span class="dash-card__label">Сводка</span>
+              <span class="dash-card__badge dash-card__badge--orange">ИМТ {{ program.bmi }}</span>
+            </div>
+            <h3 class="dash-card__title">{{ program.program_type }}</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">
+              Уровень: <strong style="color: var(--text);">{{ program.level }}</strong>
+            </p>
+            <div class="workout-list">
+              <div class="workout-item">
+                <span class="workout-item__name">Подходы × повторения</span>
+                <span class="workout-item__sets">{{ program.sets }} / {{ program.reps }}</span>
+              </div>
+              <div class="workout-item">
+                <span class="workout-item__name">Длительность</span>
+                <span class="workout-item__sets">{{ program.duration_weeks }} нед.</span>
+              </div>
+              <div class="workout-item">
+                <span class="workout-item__name">Кардио</span>
+                <span class="workout-item__sets" style="max-width: 62%; text-align: right; white-space: normal;">{{ program.cardio }}</span>
+              </div>
+              {% if program.axial_load %}
+              <div class="workout-item">
+                <span class="workout-item__name">Осевая нагрузка</span>
+                <span class="workout-item__sets" style="max-width: 62%; text-align: right; white-space: normal;">{{ program.axial_load }}</span>
+              </div>
+              {% endif %}
+            </div>
+            {% if program.focus.weakest %}
+              <div class="focus-tags">
+                {% for z in program.focus.weakest|slice:":8" %}
+                  <span class="focus-tag focus-tag--weak">{{ z }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="dash-card dash-card--progress">
+            <div class="dash-card__header">
+              <span class="dash-card__label">Рекомендации</span>
+            </div>
+            <ul class="recommendations-list">
+              {% for rec in program.recommendations %}
+                <li>{{ rec }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px;">
+        <a href="{% url 'main:animated_quiz' %}" class="btn btn--ghost btn--lg">Заполнить квиз заново</a>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="quiz" id="guide-links">
+    <div class="quiz__bg-glow"></div>
+    <div class="container">
+      <div class="program-links">
+        <article class="program-link-card program-link-card--left">
+          <h3 class="program-link-card__title">Готов изменить<br /><span class="title-outline">тело?</span></h3>
+          <p class="program-link-card__text">Заполни квиз и получи план на неделю</p>
+          <a href="{% url 'main:animated_quiz' %}" class="btn btn--primary btn--lg">Начать сейчас →</a>
+        </article>
+        <article class="program-link-card program-link-card--right">
+          <h3 class="program-link-card__title">Гайд по жиму<br /><span class="title-outline">лёжа</span></h3>
+          <p class="program-link-card__text">Отдельная страница с гайдом, подсказками по технике и калькулятором 1ПМ</p>
+          <a href="{% url 'main:guide_bench_press' %}" class="btn btn--ghost btn--lg">Открыть гайд →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-label">Вопросы</div>
+      <h2 class="section-title">FAQ</h2>
+
+      <div class="faq__grid">
+        <details class="faq-item">
+          <summary class="faq-item__q"><span class="faq-item__num">1 ]</span><span class="faq-item__text">Подойдёт ли программа, если у меня есть травмы?</span><span class="faq-item__arrow">+</span></summary>
+          <p class="faq-item__a">Да, программа учитывает индивидуальные особенности, включая травмы и ограничения. Упражнения подбираются таким образом, чтобы минимизировать риск и не нагружать проблемные зоны.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q"><span class="faq-item__num">2 ]</span><span class="faq-item__text">Нужен ли опыт тренировок в зале?</span><span class="faq-item__arrow">+</span></summary>
+          <p class="faq-item__a">Нет, программа подходит как новичкам, так и опытным спортсменам. Для новичков даются понятные инструкции и базовые упражнения, а для продвинутых — более сложные вариации и прогрессия нагрузки.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q"><span class="faq-item__num">3 ]</span><span class="faq-item__text">Что входит в гайд по жиму лёжа на 100 кг?</span><span class="faq-item__arrow">+</span></summary>
+          <p class="faq-item__a">Гайд включает технику выполнения, программу прогрессии, советы по восстановлению и частые ошибки. Он помогает системно увеличить результат в жиме лёжа и безопасно выйти на 100 кг.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q"><span class="faq-item__num">4 ]</span><span class="faq-item__text">Как быстро я смогу увидеть прогресс в силе и массе?</span><span class="faq-item__arrow">+</span></summary>
+          <p class="faq-item__a">При регулярных тренировках и соблюдении рекомендаций первые результаты можно заметить уже через 2–4 недели. Значительный рост силы (включая жим) обычно требует нескольких месяцев стабильной работы.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="{% url 'main:quiz' %}#hero" class="logo">
+          <span class="logo__text">Body<span class="accent">Code</span></span>
+        </a>
+        <p class="footer__desc">Персональные программы тренировок по данным квиза.</p>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Навигация</div>
+        <a href="#how" class="footer__link">Как это работает</a>
+        <a href="#benefits" class="footer__link">Преимущества</a>
+        <a href="#faq" class="footer__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="footer__link">Жим лежа</a>
+        <a href="{% url 'main:animated_quiz' %}" class="footer__link">Создать программу</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Проект</div>
+        <span class="footer__link" style="cursor: default;">Django + SQLite</span>
+        <span class="footer__link" style="cursor: default;">HTML / CSS / JS</span>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© 2026 BodyCode. Все права защищены.</span>
+        <span class="footer__bottom-links">
+          <a href="https://github.com/Murad5252" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub Murad5252">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/termiiinator" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub termiiinator">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/app.js' %}"></script>
+</body>
+</html>

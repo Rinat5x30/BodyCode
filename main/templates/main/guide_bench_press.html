@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BodyCode — Гайд по жиму лёжа</title>
+  <link rel="stylesheet" href="{% static 'main/styles.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="{% url 'main:quiz' %}#hero" class="logo">
+        <span class="logo__text">Body<span class="accent">Code</span></span>
+      </a>
+      <nav class="nav">
+        <a href="{% url 'main:quiz' %}#how" class="nav__link">Как это работает</a>
+        <a href="{% url 'main:quiz' %}#benefits" class="nav__link">Преимущества</a>
+        <a href="{% url 'main:quiz' %}#faq" class="nav__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="nav__link">Жим лёжа</a>
+      </nav>
+      <a href="{% url 'main:animated_quiz' %}" class="btn btn--outline">Создать программу</a>
+    </div>
+  </header>
+
+  <section class="dashboard dashboard--result" style="padding-top: 8rem;">
+    <div class="container">
+      <div class="section-label">Гайд</div>
+      <h2 class="section-title">Жим лёжа</h2>
+      <p class="section-sub">Программа и методика перенесены на сайт. PDF не встроен в страницу, но его можно скачать внизу.</p>
+
+      <div class="dashboard__layout">
+        <div class="dash-col dash-col--main">
+          <div class="dash-card dash-card--workout">
+            <div class="dash-card__header">
+              <span class="dash-card__label">Программа</span>
+              <span class="dash-card__badge">SW.BAND</span>
+            </div>
+            <h3 class="dash-card__title">Программа по неделям</h3>
+            <div class="guide-actions" style="display:flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;">
+              <a class="btn btn--primary" href="{% url 'main:animated_quiz' %}">Создать программу →</a>
+              <a class="btn btn--outline" href="{% url 'main:quiz' %}#hero">Назад на главную</a>
+            </div>
+
+            {% if guide.intro %}
+              <div class="guide-block">
+                {% for ln in guide.intro %}
+                  <p class="guide-lead">{{ ln }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if guide.legend %}
+              <div class="guide-block guide-block--legend">
+                <div class="guide-block__title">Обозначения</div>
+                <ul class="guide-list">
+                  {% for ln in guide.legend %}
+                    {% if not forloop.first %}
+                      <li>{{ ln }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            <div class="week-accordion" data-week-accordion>
+              {% for w in guide.weeks %}
+                <div class="week-acc-item">
+                  <button
+                    type="button"
+                    class="btn btn--outline week-acc-btn"
+                    data-week-btn="{{ w.num }}"
+                    aria-controls="week-{{ w.num }}"
+                    aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                  >
+                    Неделя {{ w.num }}: {{ w.title }}
+                  </button>
+
+                  <section
+                    id="week-{{ w.num }}"
+                    class="week-acc-panel"
+                    data-week-panel="{{ w.num }}"
+                    {% if not forloop.first %}hidden{% endif %}
+                    aria-label="Неделя {{ w.num }}"
+                  >
+                    <div class="guide-days">
+                      {% for d in w.days %}
+                        <div class="guide-day">
+                          <div class="guide-day__title">{% if d.name %}{{ d.name }}{% else %}День{% endif %}</div>
+                          <ul class="guide-list">
+                            {% for it in d.items %}
+                              <li>{{ it }}</li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </section>
+                </div>
+              {% empty %}
+                <p style="color: var(--text-muted);">Текст программы не найден. Проверь файл: <code>main/guides/bench_press_guide_ru.txt</code></p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-col dash-col--side">
+          <div class="dash-card dash-card--calories">
+            <div class="dash-card__header">
+              <span class="dash-card__label">Калькулятор</span>
+              <span class="dash-card__badge dash-card__badge--orange">e1RM</span>
+            </div>
+            <h3 class="dash-card__title">Жим: рабочие веса</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              Введи один "тяжёлый" подход и получи примерные веса по процентам.
+            </p>
+
+            <div class="workout-list" style="gap: 12px;">
+              <div class="workout-item" style="align-items: stretch;">
+                <span class="workout-item__name" style="padding-top: 10px;">Вес (кг)</span>
+                <span class="workout-item__sets" style="max-width: 58%; text-align: right; white-space: normal;">
+                  <input id="bp-weight" class="param-input__el" type="number" inputmode="decimal" step="0.5" min="1" placeholder="100" />
+                </span>
+              </div>
+              <div class="workout-item" style="align-items: stretch;">
+                <span class="workout-item__name" style="padding-top: 10px;">Повторы</span>
+                <span class="workout-item__sets" style="max-width: 58%; text-align: right; white-space: normal;">
+                  <input id="bp-reps" class="param-input__el" type="number" inputmode="numeric" step="1" min="1" max="20" placeholder="5" />
+                </span>
+              </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+              <div class="workout-item">
+                <span class="workout-item__name">Оценка 1ПМ (e1RM)</span>
+                <span id="bp-e1rm" class="workout-item__sets">—</span>
+              </div>
+              <div class="workout-list" style="margin-top: 10px;">
+                <div class="workout-item"><span class="workout-item__name">60%</span><span id="bp-p60" class="workout-item__sets">—</span></div>
+                <div class="workout-item"><span class="workout-item__name">70%</span><span id="bp-p70" class="workout-item__sets">—</span></div>
+                <div class="workout-item"><span class="workout-item__name">80%</span><span id="bp-p80" class="workout-item__sets">—</span></div>
+                <div class="workout-item"><span class="workout-item__name">85%</span><span id="bp-p85" class="workout-item__sets">—</span></div>
+                <div class="workout-item"><span class="workout-item__name">90%</span><span id="bp-p90" class="workout-item__sets">—</span></div>
+              </div>
+              <p style="color: var(--text-dim); font-size: 0.82rem; margin-top: 10px;">
+                Формула: Epley. Округление до 2.5 кг.
+              </p>
+            </div>
+          </div>
+
+          <div class="dash-card dash-card--progress">
+            <div class="dash-card__header">
+              <span class="dash-card__label">Подсказки</span>
+            </div>
+            <ul class="recommendations-list">
+              <li>Разминка: 5-8 минут + 2-4 разминочных подхода в жиме.</li>
+              <li>Техника: стабилизируй лопатки, контролируй касание, не "роняй" штангу.</li>
+              <li>Если есть боль в плече/локте: снизь объём, убери тяжёлые синглы и добавь варианты в тренажёре/гантели.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 22px;">
+        <div class="dash-card">
+          <div class="dash-card__header">
+            <span class="dash-card__label">Источник</span>
+            <span class="dash-card__badge">PDF</span>
+          </div>
+          <h3 class="dash-card__title">Скачать оригинал</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 12px;">
+            Программа составлена Кириллом Сарычевым. Канал на YouTube:
+            <a href="https://www.youtube.com/@KIRILLSARYCHEV" target="_blank" rel="noopener" style="color: var(--accent);">youtube.com/@KIRILLSARYCHEV</a>
+          </p>
+          <div style="display:flex; gap: 12px; flex-wrap: wrap;">
+            <a class="btn btn--primary" href="{% url 'main:guide_bench_press_source_download' %}">Скачать файл</a>
+            <a class="btn btn--ghost" href="{% url 'main:guide_bench_press_source_open' %}" target="_blank" rel="noopener">Открыть файл →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="{% url 'main:quiz' %}#hero" class="logo">
+          <span class="logo__text">Body<span class="accent">Code</span></span>
+        </a>
+        <p class="footer__desc">Персональные программы тренировок по данным квиза.</p>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Навигация</div>
+        <a href="#how" class="footer__link">Как это работает</a>
+        <a href="#benefits" class="footer__link">Преимущества</a>
+        <a href="#faq" class="footer__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="footer__link">Жим лежа</a>
+        <a href="{% url 'main:animated_quiz' %}" class="footer__link">Создать программу</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Проект</div>
+        <span class="footer__link" style="cursor: default;">Django + SQLite</span>
+        <span class="footer__link" style="cursor: default;">HTML / CSS / JS</span>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span>© 2026 BodyCode. Все права защищены.</span>
+        <span class="footer__bottom-links">
+          <a href="https://github.com/Murad5252" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub Murad5252">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/termiiinator" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub termiiinator">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.76 10.77.57.1.77-.24.77-.54v-2.08c-3.16.69-3.83-1.34-3.83-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.46.11-3.05 0 0 .95-.31 3.12 1.16a10.9 10.9 0 0 1 5.68 0c2.17-1.47 3.12-1.16 3.12-1.16.62 1.59.23 2.76.11 3.05.73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.32-5.19 5.61.41.35.77 1.04.77 2.1v3.12c0 .3.2.65.78.54 4.5-1.5 7.75-5.75 7.75-10.77C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const w = document.getElementById("bp-weight");
+      const r = document.getElementById("bp-reps");
+      const outE1 = document.getElementById("bp-e1rm");
+      const out60 = document.getElementById("bp-p60");
+      const out70 = document.getElementById("bp-p70");
+      const out80 = document.getElementById("bp-p80");
+      const out85 = document.getElementById("bp-p85");
+      const out90 = document.getElementById("bp-p90");
+
+      function roundTo2p5(x) {
+        return Math.round(x / 2.5) * 2.5;
+      }
+
+      function fmtKg(x) {
+        if (!Number.isFinite(x)) return "—";
+        const v = roundTo2p5(x);
+        return (v % 1 === 0 ? String(v.toFixed(0)) : String(v.toFixed(1))) + " кг";
+      }
+
+      function calc() {
+        const weight = Number(w.value);
+        const reps = Number(r.value);
+        if (!Number.isFinite(weight) || !Number.isFinite(reps) || weight <= 0 || reps <= 0) {
+          outE1.textContent = "—";
+          out60.textContent = "—";
+          out70.textContent = "—";
+          out80.textContent = "—";
+          out85.textContent = "—";
+          out90.textContent = "—";
+          return;
+        }
+
+        // Epley: 1RM = weight * (1 + reps/30)
+        const e1rm = weight * (1 + reps / 30);
+        outE1.textContent = fmtKg(e1rm);
+        out60.textContent = fmtKg(e1rm * 0.60);
+        out70.textContent = fmtKg(e1rm * 0.70);
+        out80.textContent = fmtKg(e1rm * 0.80);
+        out85.textContent = fmtKg(e1rm * 0.85);
+        out90.textContent = fmtKg(e1rm * 0.90);
+      }
+
+      w && w.addEventListener("input", calc);
+      r && r.addEventListener("input", calc);
+      calc();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const root = document.querySelector("[data-week-accordion]");
+      if (!root) return;
+
+      const btns = Array.from(root.querySelectorAll("[data-week-btn]"));
+      const panels = Array.from(root.querySelectorAll("[data-week-panel]"));
+
+      function clearHash() {
+        const url = window.location.pathname + window.location.search;
+        history.replaceState(null, "", url);
+      }
+
+      function setActiveWeek(weekNum, opts) {
+        if (weekNum === null || weekNum === undefined || weekNum === "") {
+          btns.forEach((b) => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-expanded", "false");
+          });
+          panels.forEach((p) => p.setAttribute("hidden", ""));
+          if (opts && opts.updateHash) {
+            clearHash();
+          }
+          return;
+        }
+
+        const w = String(weekNum);
+        btns.forEach((b) => {
+          const active = b.getAttribute("data-week-btn") === w;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-expanded", active ? "true" : "false");
+        });
+        panels.forEach((p) => {
+          const active = p.getAttribute("data-week-panel") === w;
+          if (active) {
+            p.removeAttribute("hidden");
+          } else {
+            p.setAttribute("hidden", "");
+          }
+        });
+
+        if (opts && opts.updateHash) {
+          history.replaceState(null, "", "#week-" + w);
+        }
+
+        const panel = document.getElementById("week-" + w);
+        if (panel && opts && opts.scrollToPanel) {
+          panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      btns.forEach((b) => {
+        b.addEventListener("click", () => {
+          const w = b.getAttribute("data-week-btn");
+          const isOpen = b.getAttribute("aria-expanded") === "true";
+          if (isOpen) {
+            setActiveWeek(null, { updateHash: true });
+          } else {
+            setActiveWeek(w, { updateHash: true, scrollToPanel: false });
+          }
+        });
+      });
+
+      const m = /^#week-(\d+)$/.exec(window.location.hash || "");
+      if (m) {
+        setActiveWeek(m[1], { updateHash: false, scrollToPanel: true });
+      } else if (btns[0]) {
+        setActiveWeek(btns[0].getAttribute("data-week-btn"), { updateHash: false, scrollToPanel: false });
+      }
+    })();
+  </script>
+</body>
+</html>
