@@ -612,11 +612,17 @@
 .workout-item__name {
   color: var(--text);
   font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  padding-right: 8px;
 }
 
 .workout-item__sets {
   color: var(--accent);
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 /* Focus Tags */
@@ -730,11 +736,12 @@
 ------------------------------------------------------- */
 @media (max-width: 768px) {
   .animated-quiz-section {
-    padding: 60px 0;
+    padding: 56px 0;
+    margin-top: 72px;
   }
 
   .animated-quiz-header {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
 
   .quiz-question__title {
@@ -743,7 +750,7 @@
   }
 
   .quiz-progress {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
 
   .gender-select {
@@ -763,46 +770,76 @@
   }
 
   .dashboard__layout {
-    gap: 20px;
+    gap: 16px;
   }
 
   .quiz-result-overlay {
-    padding: 78px 12px 20px;
+    padding: 72px 12px 20px;
   }
 
   .quiz-result-modal {
     padding: 20px 16px;
+    border-radius: var(--radius);
+  }
+
+  .quiz-result .section-sub {
+    margin-bottom: 2rem;
   }
 }
 
 @media (max-width: 480px) {
   .animated-quiz-container {
     max-width: 100%;
-    padding: 0 16px;
+    padding: 0 14px;
   }
 
   .animated-quiz-section {
-    padding: 40px 0;
+    padding: 36px 0;
+    margin-top: 68px;
+  }
+
+  .animated-quiz-header {
+    margin-bottom: 28px;
+  }
+
+  .quiz-progress {
+    margin-bottom: 28px;
   }
 
   .quiz-question__title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
   }
 
   .gender-select {
     grid-template-columns: 1fr;
   }
 
+  .gender-option__card {
+    padding: 18px 20px;
+  }
+
   .measure-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .age-select {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .age-option span {
+    padding: 12px 8px;
+    min-height: 52px;
+    font-size: 0.82rem;
   }
 
   .contra-grid {
     grid-template-columns: 1fr;
+  }
+
+  .goal-option__card {
+    padding: 14px 16px;
+    gap: 8px;
   }
 
   .btn {
@@ -811,15 +848,58 @@
   }
 
   .btn--lg {
-    padding: 14px 20px;
+    padding: 13px 18px;
   }
 
   .quiz-controls {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 36px;
+    padding-top: 24px;
   }
 
   .quiz-controls .btn {
     width: 100%;
+  }
+
+  /* Result overlay */
+  .quiz-result-overlay {
+    padding: 64px 8px 16px;
+  }
+
+  .quiz-result-modal {
+    padding: 16px 14px;
+    border-radius: var(--radius);
+  }
+
+  .quiz-result-close {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+  }
+
+  .quiz-result .section-sub {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .quiz-result .section-title {
+    font-size: clamp(1.8rem, 9vw, 2.4rem);
+  }
+
+  .dash-card {
+    padding: 16px 12px;
+  }
+
+  .dash-card__title {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+  }
+
+  .workout-item {
+    flex-wrap: wrap;
+    gap: 4px;
   }
 }

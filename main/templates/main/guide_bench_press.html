@@ -23,6 +23,17 @@
         <a href="{% url 'main:guide_bench_press' %}" class="nav__link">Жим лёжа</a>
       </nav>
       <a href="{% url 'main:animated_quiz' %}" class="btn btn--outline">Создать программу</a>
+      <input type="checkbox" id="menu-toggle" class="menu-toggle-input" />
+      <label for="menu-toggle" class="menu-burger">
+        <span></span><span></span><span></span>
+      </label>
+      <div class="mobile-nav">
+        <a href="{% url 'main:quiz' %}#how" class="nav__link">Как это работает</a>
+        <a href="{% url 'main:quiz' %}#benefits" class="nav__link">Преимущества</a>
+        <a href="{% url 'main:quiz' %}#faq" class="nav__link">FAQ</a>
+        <a href="{% url 'main:guide_bench_press' %}" class="nav__link">Жим лёжа</a>
+        <a href="{% url 'main:animated_quiz' %}" class="btn btn--primary">Создать программу</a>
+      </div>
     </div>
   </header>
 
