@@ -1,1 +1,1 @@
-gunicorn bodycode_project.wsgi
+web: gunicorn bodycode_project.wsgi
