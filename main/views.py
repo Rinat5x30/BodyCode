@@ -57,7 +57,7 @@ def _parse_bench_guide(text: str) -> dict:
     legend: list[str] = []
     weeks: list[dict] = []
 
-    # Intro/legend: everything before the first "N НЕДЕЛЯ"
+    # Intro/legend: everything before the first week
     first_week_idx = None
     for i, ln in enumerate(lines):
         if _WEEK_RE.match(ln):
@@ -66,7 +66,7 @@ def _parse_bench_guide(text: str) -> dict:
 
     head = lines if first_week_idx is None else lines[:first_week_idx]
     if head:
-        # Try to split intro vs legend around "Обозначения"
+        # Try to split intro vs legend 
         legend_start = None
         for i, ln in enumerate(head):
             if ln.lower().startswith("обозначения"):

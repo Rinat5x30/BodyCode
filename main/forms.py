@@ -14,12 +14,12 @@ class QuizForm(forms.Form):
         ("no", "Нет"),
     )
     experience = (
-        # training options
+        # training
         ("lt1m", "< 1 месяца"),
         ("m1_3", "1-3 месяца"),
         ("m3_6", "3-6 месяцев"),
         ("gt6m", "> 6 месяцев"),
-        # not_training options
+        # not_training 
         ("lt2w", "< 2 недель"),
         ("w2_4", "2-4 недели"),
         ("gt4w", "> 4 недель"),

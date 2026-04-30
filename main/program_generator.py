@@ -34,7 +34,7 @@ level_load = {"beginner": (2, "10-15"), "fanat": (2, "10-15"), "pro": (3, "8-12"
 
 level_duration = {"beginner": 3, "fanat": 4, "pro": 4, "legend": 4}
 
-# Кол-во упражнений на мышечную группу в зависимости от уровня
+# Колво упражнений
 GROUP_COUNT: dict[str, dict[str, int]] = {
     "beginner": {
         "грудь": 1, "спина": 1, "квадрицепсы": 1, "средняя дельта": 1,
@@ -54,13 +54,7 @@ GROUP_COUNT: dict[str, dict[str, int]] = {
         "передняя дельта": 1, "задняя дельта": 1, "икры": 1,
     },
 }
-# Переопределение числа подходов для конкретных групп (если отличается от level_load)
-GROUP_SETS: dict[str, dict[str, int]] = {
-    "fanat": {
-        "грудь": 2, "спина": 2, "квадрицепсы": 2,
-        "бицепс бедра": 2, "бицепс": 2, "трицепс": 2, "пресс": 2, "средняя дельта": 2,
-    },
-}
+
 
 goal_cardio = {
     "bulk": "Отсутствие кардио",
@@ -117,7 +111,6 @@ class QuizProfile:
 def normalize_profile_data(cleaned_data: dict) -> dict:
     data = dict(cleaned_data)
 
-    # Support both old and new field names from forms.
     if "training_status" not in data:
         training_now = data.get("training_now")
         if training_now == "yes":
@@ -136,7 +129,6 @@ def normalize_profile_data(cleaned_data: dict) -> dict:
             data["training_pause"] = period if period in {"lt2w", "w2_4", "gt4w"} else None
         data.setdefault("training_experience", None)
 
-    # Form field `injury` may be one or many values; engine expects a flat list.
     if "contraindications" not in data:
         injury = data.get("injury")
         if isinstance(injury, list):
@@ -298,7 +290,7 @@ def pick_exercises_for_day(
 ) -> list[dict]:
     focus_l = focus.lower()
 
-    # Бро-сплит: точные совпадения идут первыми, иначе "ног" поглощает "Ноги+плечи"
+    # Бро-сплит
     if focus_l == "грудь+бицепс":
         requested_groups = ["грудь", "бицепс", "предплечья"]
     elif focus_l == "спина+трицепс":
@@ -306,16 +298,14 @@ def pick_exercises_for_day(
     elif focus_l == "ноги+плечи":
         requested_groups = ["квадрицепсы", "бицепс бедра", "икры", "средняя дельта", "передняя дельта", "задняя дельта"]
     elif focus_l == "тяни":
-        # Тяни-толкай-ноги: есть отдельный день ног
+        # Тяни-толкай-ноги
         requested_groups = ["спина", "бицепс", "средняя дельта", "задняя дельта"]
     elif focus_l == "толкай":
-        # Тяни-толкай-ноги: есть отдельный день ног
         requested_groups = ["грудь", "трицепс", "передняя дельта", "пресс"]
     elif focus_l.startswith("тяни"):
-        # Тяни/Толкай (чередование) — фанат, нет отдельного дня ног
+        # Тяни/Толкай
         requested_groups = ["спина", "бицепс", "средняя дельта", "задняя дельта", "бицепс бедра"]
     elif focus_l.startswith("толкай"):
-        # Толкай/Тяни (чередование) — фанат, нет отдельного дня ног
         requested_groups = ["грудь", "трицепс", "передняя дельта", "пресс", "квадрицепсы"]
     elif "ног" in focus_l or "низ" in focus_l:
         requested_groups = ["квадрицепсы", "бицепс бедра", "ягодицы", "икры", "пресс"]
@@ -330,13 +320,12 @@ def pick_exercises_for_day(
 
     selected_groups = [g for g in requested_groups if g in groups]
     level_counts = GROUP_COUNT.get(level, {})
-    group_sets_table = GROUP_SETS.get(level, {})
     result = []
 
     for group in selected_groups:
         count = min(level_counts.get(group, 1), 1 if group == "икры" else 999)
         names = get_available_exercises_for_group(group, contraindications, count=count)
-        group_base = group_sets_table.get(group, base_sets)
+        group_base = base_sets
         extra = (add_sets.get(group, 0) if add_sets else 0)
         for i, name in enumerate(names):
             sets = group_base + (extra if i == 0 else 0)
@@ -382,12 +371,6 @@ def generate_program(cleaned_data: dict) -> dict:
     if focus["weakest"]:
         recommendations.append(f"Отстающие зоны для акцента: {', '.join(focus['weakest'])}.")
 
-    training_period = normalized_data.get("training_period")
-    if profile.training_status == "not_training" and training_period == "w2_4":
-        recommendations.append("Первые 1-2 недели после перерыва держите нагрузку ниже обычной.")
-    if profile.training_status == "not_training" and training_period == "gt1m":
-        recommendations.append("После длительного перерыва начинайте как новичок и увеличивайте объем постепенно.")
-
     return {
         "bmi": bmi,
         "level": level,
@@ -400,5 +383,5 @@ def generate_program(cleaned_data: dict) -> dict:
         "exercises_by_day": exercises_by_day,
         "recommendations": recommendations,
         "focus": focus,
-        "contraindications": profile.contraindications,
+        "contraindications": profile.contraindications, # противопоказания
     }
