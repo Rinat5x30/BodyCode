@@ -15,6 +15,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://bodycode.lol",
+    "https://www.bodycode.lol",
+]
+
 
 # Application definition
 
