@@ -7,7 +7,7 @@
 [![Live](https://img.shields.io/badge/Live-bodycode.lol-FF5A1F?style=flat-square)](https://bodycode.lol)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-6.0-092E20?style=flat-square&logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Heroku](https://img.shields.io/badge/Deployed_on-Heroku-430098?style=flat-square&logo=heroku&logoColor=white)](https://heroku.com)
+[![Railway](https://img.shields.io/badge/Deployed_on-Railway-0B0D0E?style=flat-square&logo=railway&logoColor=white)](https://railway.app)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 [**→ Try it live at bodycode.lol**](https://bodycode.lol)
@@ -55,10 +55,11 @@ The core logic lives in `main/program_generator.py`. Given the quiz answers, the
 |---|---|---|
 | Backend | Django 6.0.4 | Views, forms, template engine |
 | Server | Gunicorn + WhiteNoise | Production WSGI + static files |
+| Deployment | Railway | Connected to GitHub, auto-deploy on push |
 | Database | SQLite | Dev / lightweight prod |
 | Frontend | Vanilla JS + CSS3 | No frameworks, fully custom |
 | Fonts | DM Sans, Syne, Bebas Neue | Google Fonts |
-| Deployment | Heroku | `Procfile` included |
+| Deployment | Railway | `Procfile` included, auto-deploy on push |
 | Config | python-decouple | `.env`-based secrets management |
 
 ---
@@ -131,18 +132,19 @@ BodyCode/
 
 ---
 
-## Deployment (Heroku)
+## Deployment (Railway)
 
-```bash
-heroku create your-app-name
-heroku config:set \
-  SECRET_KEY=$(python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())") \
-  DEBUG=False \
-  ALLOWED_HOSTS=your-app-name.herokuapp.com
+1. Push the repo to GitHub
+2. Create a new project on [railway.app](https://railway.app) → **Deploy from GitHub repo**
+3. Set environment variables in the Railway dashboard:
 
-git push heroku main
-heroku run python manage.py migrate
-```
+   | Variable | Value |
+   |---|---|
+   | `SECRET_KEY` | generate with `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
+   | `DEBUG` | `False` |
+   | `ALLOWED_HOSTS` | `your-domain.up.railway.app` |
+
+4. Railway auto-detects `Procfile` and deploys on every push to `main`
 
 ---
 
