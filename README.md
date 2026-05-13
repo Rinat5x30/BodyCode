@@ -148,12 +148,6 @@ BodyCode/
 
 ---
 
-## Author
-
-**Rinat Aghayev** — [github.com/Rinat5x30](https://github.com/Rinat5x30)
-
----
-
 ## License
 
 MIT
