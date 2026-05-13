@@ -15,7 +15,7 @@
 </div>
 
 ---
-
+ 
 ## What is BodyCode?
 
 BodyCode is a full-stack web application that builds a **personalized training program** in seconds. The user fills out a multi-step quiz — age, weight, body measurements, training experience, goals, injuries — and the backend algorithm produces a structured weekly split tailored specifically to them.
