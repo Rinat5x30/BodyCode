@@ -1,31 +1,65 @@
+<div align="center">
+
 # BodyCode
 
-A web application that generates personalized workout programs based on user metrics, goals, and training history.
+**Personalized workout program generator — built with Django**
 
-**Live:** [bodycode.lol](https://bodycode.lol)
+[![Live](https://img.shields.io/badge/Live-bodycode.lol-FF5A1F?style=flat-square)](https://bodycode.lol)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-6.0-092E20?style=flat-square&logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Heroku](https://img.shields.io/badge/Deployed_on-Heroku-430098?style=flat-square&logo=heroku&logoColor=white)](https://heroku.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+
+[**→ Try it live at bodycode.lol**](https://bodycode.lol)
+
+</div>
+
+---
+
+## What is BodyCode?
+
+BodyCode is a full-stack web application that builds a **personalized training program** in seconds. The user fills out a multi-step quiz — age, weight, body measurements, training experience, goals, injuries — and the backend algorithm produces a structured weekly split tailored specifically to them.
+
+No accounts. No subscriptions. Just data in, program out.
+
+---
+
+## How It Works
+
+The core logic lives in `main/program_generator.py`. Given the quiz answers, the engine:
+
+1. **Selects a split type** based on experience level and training frequency
+   - Beginner → Fullbody / Upper-Lower
+   - Intermediate → Push-Pull / Push-Pull-Legs
+   - Advanced → Bro-Split / PPL
+2. **Filters the exercise pool** by declared injuries and contraindications
+3. **Adjusts volume and intensity** based on goal (cut / bulk / maintenance) and gender
+4. **Calculates calorie and macro targets** from body metrics (weight, height, age, activity level)
+5. **Outputs a weekly schedule** with sets, reps, and focus muscle groups per session
 
 ---
 
 ## Features
 
-- **Personalized program generation** — builds split types (Fullbody, Push-Pull, Upper-Lower, PPL, Bro-Split) based on experience level, goals, and weekly availability
-- **Animated multi-step quiz** — step-by-step form with smooth transitions and real-time validation
-- **Injury-aware filtering** — automatically excludes exercises based on declared contraindications
-- **Gender & goal adjustments** — separate volume, intensity, and calorie targets for cut / bulk / maintenance
-- **Bench press guide** — structured weekly progression guide with an accordion UI
-- **Fully responsive** — custom dark-theme CSS, works on all screen sizes
+- **Animated multi-step quiz** — smooth slide transitions, real-time client-side validation, progress bar
+- **Smart program generation** — 5 split types, 50+ exercises, injury-aware filtering, gender-specific load adjustments
+- **Bench press progression guide** — 12-week structured program with a collapsible week-by-week accordion UI
+- **Fully custom dark UI** — no CSS framework, pure CSS3 with CSS variables, `clamp()` responsive typography, and orange accent theme
+- **Production-ready** — CSRF protection, HSTS, secure cookies, `X-Frame-Options: DENY`, WhiteNoise static serving
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Django 6.0.4, Python |
-| Server | Gunicorn + WhiteNoise |
-| Database | SQLite (dev) |
-| Frontend | Vanilla JS, custom CSS3 |
-| Deployment | Heroku |
+| Layer | Technology | Notes |
+|---|---|---|
+| Backend | Django 6.0.4 | Views, forms, template engine |
+| Server | Gunicorn + WhiteNoise | Production WSGI + static files |
+| Database | SQLite | Dev / lightweight prod |
+| Frontend | Vanilla JS + CSS3 | No frameworks, fully custom |
+| Fonts | DM Sans, Syne, Bebas Neue | Google Fonts |
+| Deployment | Heroku | `Procfile` included |
+| Config | python-decouple | `.env`-based secrets management |
 
 ---
 
@@ -34,25 +68,23 @@ A web application that generates personalized workout programs based on user met
 **Requirements:** Python 3.10+
 
 ```bash
-# Clone the repo
+# 1. Clone
 git clone https://github.com/Rinat5x30/BodyCode.git
 cd BodyCode
 
-# Create and activate virtual environment
+# 2. Virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate      # Windows: venv\Scripts\activate
 
-# Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
+# 4. Environment
 cp .env.example .env
-# Edit .env and set your SECRET_KEY
+# Open .env and set SECRET_KEY (generate one with: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
 
-# Apply migrations
+# 5. Migrate & run
 python manage.py migrate
-
-# Run the development server
 python manage.py runserver
 ```
 
@@ -62,13 +94,11 @@ Open [http://localhost:8000](http://localhost:8000)
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and fill in the values:
-
-| Variable | Description | Default |
+| Variable | Required | Description |
 |---|---|---|
-| `SECRET_KEY` | Django secret key | — (required) |
-| `DEBUG` | Enable debug mode | `False` |
-| `ALLOWED_HOSTS` | Comma-separated list of allowed hosts | `bodycode.lol,www.bodycode.lol` |
+| `SECRET_KEY` | Yes | Django secret key |
+| `DEBUG` | No | `True` for dev, `False` for prod (default: `False`) |
+| `ALLOWED_HOSTS` | No | Comma-separated hosts (default: `bodycode.lol,www.bodycode.lol`) |
 
 ---
 
@@ -76,17 +106,27 @@ Copy `.env.example` to `.env` and fill in the values:
 
 ```
 BodyCode/
-├── bodycode_project/      # Django project config (settings, urls, wsgi)
-├── main/                  # Main application
-│   ├── templates/main/    # HTML templates
-│   ├── static/main/       # CSS, JS, images
-│   ├── forms.py           # Quiz form definition
-│   ├── views.py           # View functions
-│   ├── program_generator.py  # Core workout generation logic
+├── bodycode_project/
+│   ├── settings.py            # Config via python-decouple
+│   ├── urls.py
+│   └── wsgi.py
+├── main/
+│   ├── templates/main/
+│   │   ├── quiz.html          # Standard quiz (landing page)
+│   │   ├── animated_quiz.html # Animated multi-step quiz
+│   │   └── guide_bench_press.html
+│   ├── static/main/
+│   │   ├── styles.css         # Main stylesheet (~1600 lines, custom dark theme)
+│   │   ├── animated_quiz.css  # Quiz-specific overrides
+│   │   └── animated_quiz.js   # Quiz step logic & result modal
+│   ├── forms.py               # QuizForm — all input fields & validation
+│   ├── views.py               # View functions
+│   ├── program_generator.py   # Core algorithm — split selection, exercise filtering, macros
 │   └── urls.py
 ├── .env.example
 ├── requirements.txt
-└── Procfile               # Heroku entry point
+├── Procfile
+└── README.md
 ```
 
 ---
@@ -94,11 +134,21 @@ BodyCode/
 ## Deployment (Heroku)
 
 ```bash
-heroku create
-heroku config:set SECRET_KEY=<your-key> DEBUG=False ALLOWED_HOSTS=<your-domain>
+heroku create your-app-name
+heroku config:set \
+  SECRET_KEY=$(python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())") \
+  DEBUG=False \
+  ALLOWED_HOSTS=your-app-name.herokuapp.com
+
 git push heroku main
 heroku run python manage.py migrate
 ```
+
+---
+
+## Author
+
+**Rinat Aghayev** — [github.com/Rinat5x30](https://github.com/Rinat5x30)
 
 ---
 
